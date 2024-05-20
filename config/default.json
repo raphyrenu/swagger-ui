@@ -1,0 +1,11 @@
+{
+    "port": 10000,
+    "database": {
+      "uri": "mongodb+srv://raphyboy159:vNI9mxouIRomaTCL@cluster1.ypp4dm0.mongodb.net/stanley?retryWrites=true&w=majority&appName=Cluster1"
+    },
+    "jwt": {
+      "secret": "raphael",
+      "expiresIn": "1h"
+    }
+  }
+  

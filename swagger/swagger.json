@@ -1,0 +1,376 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Teacher-daily-record",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": { "email": "" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "authorization"
+    }
+  },
+  "host": "localhost:10000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Attendance",
+      "description": "Endpoints for managing attendance"
+    },
+    {
+      "name": "Timetable",
+      "description": "Endpoints for managing timetable"
+    },
+    {
+      "name": "Daily Record",
+      "description": "Endpoints for managing daily records"
+    },
+    {
+      "name": "Teachers",
+      "description": "Everything about Teacher dairy reports in school",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "paths": {
+    "/api/attendance/mark": {
+      "post": {
+        "tags": ["Attendance"],
+        "summary": "Mark attendance for students",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Attendance data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+                "present": { "type": "boolean", "example": true }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/Attendance" }
+          },
+          "400": { "description": "Bad request" }
+        }
+      }
+    },
+    "/api/attendance/report": {
+      "get": {
+        "tags": ["Attendance"],
+        "summary": "Get attendance report for the authenticated user",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "type": "object", "properties": { "attendancePercentage": { "type": "number", "example": 80 } } }
+          }
+        }
+      }
+    },
+    "/api/attendance/{id}": {
+      "delete": {
+        "tags": ["Attendance"],
+        "summary": "Delete attendance record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the attendance record to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/Attendance" }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Attendance"],
+        "summary": "Update attendance record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the attendance record to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated attendance data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+                "present": { "type": "boolean", "example": true }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/Attendance" }
+          }
+        }
+      }
+    },
+    "/api/timetable": {
+      "post": {
+        "tags": ["Timetable"],
+        "summary": "Create timetable entry",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Timetable entry data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+                "subject": { "type": "string", "example": "Mathematics" },
+                "startTime": { "type": "string", "format": "time", "example": "09:00:00" },
+                "endTime": { "type": "string", "format": "time", "example": "10:00:00" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/TimetableEntry" }
+          },
+          "400": { "description": "Bad request" }
+        }
+      },
+      "get": {
+        "tags": ["Timetable"],
+        "summary": "Get timetable for the authenticated user",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/TimetableEntry" }
+            }
+          }
+        }
+      }
+    },
+    "/api/timetable/{id}": {
+      "delete": {
+        "tags": ["Timetable"],
+        "summary": "Delete timetable entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the timetable entry to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/TimetableEntry" }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Timetable"],
+        "summary": "Update timetable entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the timetable entry to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated timetable entry data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+                "subject": { "type": "string", "example": "Mathematics" },
+                "startTime": { "type": "string", "format": "time", "example": "09:00:00" },
+                "endTime": { "type": "string", "format": "time", "example": "10:00:00" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/TimetableEntry" }
+          }
+        }
+      }
+    },
+    "/api/daily-record": {
+      "post": {
+        "tags": ["Daily Record"],
+        "summary": "Create daily record entry",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Daily record entry data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+                "lessonTopics": { "type": "array", "items": { "type": "string" }, "example": ["Topic 1", "Topic 2"] },
+                "notes": { "type": "string", "example": "Additional notes" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/DailyRecord" }
+          },
+          "400": { "description": "Bad request" }
+        }
+      },
+      "get": {
+        "tags": ["Daily Record"],
+        "summary": "Get daily records for the authenticated user",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/DailyRecord" }
+            }
+          }
+        }
+      }
+    },
+    "/api/daily-record/{id}": {
+      "delete": {
+        "tags": ["Daily Record"],
+        "summary": "Delete daily record entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the daily record entry to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/DailyRecord" }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Daily Record"],
+        "summary": "Update daily record entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the daily record entry to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated daily record entry data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+                "lessonTopics": { "type": "array", "items": { "type": "string" }, "example": ["Topic 1", "Topic 2"] },
+                "notes": { "type": "string", "example": "Additional notes" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "$ref": "#/definitions/DailyRecord" }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "student": {
+      "type": "object",
+      "required": ["name", "age", "grade"],
+      "properties": {
+        "name": { "type": "string", "example": "raphy" },
+        "age": { "type": "integer", "example": 0 },
+        "grade": { "type": "integer", "example": 10 },
+        "class": { "type": "integer", "example": 10 }
+      },
+      "xml": { "name": "student" }
+    },
+    "Attendance": {
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "example": "userId123" },
+        "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+        "present": { "type": "boolean", "example": true }
+      }
+    },
+    "TimetableEntry": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "example": "timetableId123" },
+        "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+        "subject": { "type": "string", "example": "Mathematics" },
+        "startTime": { "type": "string", "format": "time", "example": "09:00:00" },
+        "endTime": { "type": "string", "format": "time", "example": "10:00:00" }
+      }
+    },
+    "DailyRecord": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "example": "dailyRecordId123" },
+        "date": { "type": "string", "format": "date", "example": "2024-05-13" },
+        "lessonTopics": { "type": "array", "items": { "type": "string" }, "example": ["Topic 1", "Topic 2"] },
+        "notes": { "type": "string", "example": "Additional notes" }
+      }
+    }
+  }
+}
